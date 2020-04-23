@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% if f != "f" %}
+    <h2>輸入學生證號碼查詢是否在本校健康資料名單</h2>
+<form  role="search" action= 'search'>
+             <div class="form-group">
+         <input type="text"  class="form-control" name = "q" placeholder="Search">
+         </div>
+          </form>
+ {% if data4%}
+     {{ data4}}
+     {% if data4 == "此人有健康資料，前往建立臉部資料"%}
+         <form action='{% url "create" %}' method='GET'>
+                <input type="hidden" name="stid" value={{st_id}}>
+                <input type="hidden" name="c" value="c">
+            <button name = send type='submit'>前往建模</button>
+                </form>
+         {% endif %}
+{% endif %}
+
+         <form action='{% url "home" %}' method='GET'>
+            <button name = send type='submit' value="l">返回人臉辨識系統</button>
+                </form>
+{% else %}
+    <h2>正在建模請勿移動</h2>
+    <img style="width: 520px; height: 430px" src={% url "creat_stream" %}>
+
+    <script type="text/javascript">
+            let xmlhttp = new XMLHttpRequest();
+            function updateProgress (oEvent) {
+                let p = document.createElement('p');
+                let text = document.createTextNode(oEvent.target.responseText);
+                p.appendChild(text);
+                document.getElementById('data').appendChild(p);
+                setInterval('window.location.assign("HTTP://127.0.0.1:8000/");',3000);
+            }
+            url = '{% url "take" %}';
+            xmlhttp.addEventListener('progress', updateProgress, false);
+            xmlhttp.open("get", url, true);
+            xmlhttp.send();
+        </script>
+    <p id="data"></p>
+{% endif %}
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<img style="width: 520px; height: 430px" src={% url "test_stream" %}>
+
+<script type="text/javascript">
+        let xmlhttp = new XMLHttpRequest();
+        function updateProgress (oEvent) {
+            let p = document.createElement('p');
+            let arr = {{data1|safe}} ;
+            let arr1 = {{data2|safe}} ;
+            for (var i = 0; i < arr.length; i++) {
+                  if ( arr[i] == oEvent.target.responseText ) {
+                    let dd = oEvent.target.responseText+" 近三個月旅遊史："+arr1[i];
+                    var text = document.createTextNode(dd);
+                    setInterval('window.location.reload();',5000);
+                    }
+                  else if(oEvent.target.responseText=="此人沒有在臉部資料庫"){
+                      setInterval('window.location.assign("HTTP://127.0.0.1:8000/create/");',3000);
+                       let dd = oEvent.target.responseText+" 正在轉跳查詢與創建臉部頁面";
+                    var text = document.createTextNode(dd);
+                  }
+            }
+            p.appendChild(text);
+            document.getElementById('data').appendChild(p).style.fontSize="larger";
+        }
+        url = '{% url "name_stream" %}';
+        xmlhttp.addEventListener('progress', updateProgress, false);
+        xmlhttp.open("get", url, true);
+        xmlhttp.send();
+    </script>
+{% if ss == '123' %}{{ss}}{{ 123 }}{% endif %}
+
+<p id="data"></p>
+</body>
+</html>
